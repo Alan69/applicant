@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
+
+<head>
+  {% include 'application/inc/head.html' %}
+</head>
+
+
+<body>
+  {% block login %}
+  {% endblock %}
+  {% block signup %}
+  {% endblock %}
+  {% block whitebox %}
+  {% endblock %}
+  {% block logout %}
+  {% endblock %}
+  {% block password_reset %}
+  {% endblock %}
+  {% block confirm %}
+  {% endblock %}
+
+
+
+  <script src="{% static 'core/vendor/libs/jquery/jquery.js' %}"></script>
+  <script src="{% static 'core/vendor/libs/popper/popper.js' %}"></script>
+  <script src="{% static 'core/vendor/js/bootstrap.js' %}"></script>
+  <script src="{% static 'core/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+
+  <script src="{% static 'core/vendor/js/menu.js' %}"></script>
+  <!-- endbuild -->
+
+  <!-- Vendors JS -->
+  <script src="{% static 'core/vendor/libs/apex-charts/apexcharts.js' %}"></script>
+
+  <!-- Main JS -->
+  <script src="{% static 'core/js/main.js' %}"></script>
+
+  <!-- Page JS -->
+  <script src="{% static 'core/js/dashboards-analytics.js' %}"></script>
+
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+
+</html>

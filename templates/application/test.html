@@ -1,0 +1,51 @@
+<div class="col-md-6">
+    <div class="card mb-4">
+
+      <h5 class="card-header fw-bold">{% trans "5. Данные учебного заведения" %}</h5>
+      <hr class="m-2">
+      <div class="card-body">
+        <div>
+
+          <label for="{{ form.educational_institution.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Вид учебного заведения:" %}</label>
+          {% if form.educational_institution.errors %}
+          <ul class="errorlist">
+            {% for error in form.educational_institution.errors %}
+            <li class="alert alert-danger">{% trans "{{ error }}" %}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <select class="form-select" name="{{ form.educational_institution.name }}" id="{{ form.educational_institution.id_for_label }}" required>
+            <!-- Опции для выбора области -->
+            {% for widget in form.educational_institution.subwidgets %}
+            {{ widget }}
+            {% endfor %}
+          </select>
+
+        </div>
+        <div>
+          <label for="{{ form.institution_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Название учебного заведения:" %}</label>
+          {% if form.institution_name.errors %}
+          <ul class="errorlist">
+            {% for error in form.institution_name.errors %}
+            <li class="alert alert-danger">{% trans "{{ error }}" %}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <input type="text" class="form-control" name="{{ form.institution_name.name }}" id="{{ form.institution_name.id_for_label }}" {% if form.institution_name.value %} value="{{ form.institution_name.value }}" {% endif %} required>
+        </div>
+        <div>
+          <label for="{{ form.educational_country.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Страна:" %}</label>
+          {% if form.educational_country.errors %}
+          <ul class="errorlist">
+            {% for error in form.educational_country.errors %}
+            <li class="alert alert-danger">{% trans "{{ error }}" %}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <select class="form-select" name="{{ form.educational_country.name }}" id="{{ form.educational_country.id_for_label }}" required>
+            <!-- Опции для выбора области -->
+            {% for widget in form.educational_country.subwidgets %}
+            {{ widget }}
+            {% endfor %}
+          </select>
+        </div>

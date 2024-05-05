@@ -1,0 +1,95 @@
+{% extends 'application/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block applies %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+
+
+
+    <div class="col-xl-6">
+      <h6 class="text-muted">Мои заявки</h6>
+      {% for proposal in proposals %}
+      <div class="card mb-3">
+        <div class="d-flex align-items-end row">
+
+          <div class="card-body">
+            <div class="d-flex ms-3">
+              <h6 class="card-title me-3 mt-1">Статус заявки:</h6>
+              <div class="">
+                  <a href="{% url 'applicationedit' proposal.pk %}"><span class="badge bg-label-warning me-1">Edit</span></a>
+                  {% if proposal.status == 'checking' %}
+                <span class="badge bg-label-warning me-1">На рассмотрении</span>
+                  {% elif proposal.status == 'accepted' %}
+                  <span class="badge bg-label-success me-1">Принято</span>
+                  {% elif proposal.status == 'ordered' %}
+                  <span class="badge bg-label-info me-1">Добавлен в приказ</span>
+                  {% elif proposal.status == 'rejeted' %}
+                  <span class="badge bg-label-danger me-1">Отказано</span>
+                  {% elif proposal.status == 'edit' and proposal.commandant_reason == 'no_document' %}
+                  <span class="badge bg-label-secondary me-1">Отказ: Отсутствие документа</span>
+                  <span class="badge bg-label-primary me-1">На редактирование</span>
+                  {% elif proposal.status == 'edit' and proposal.commandant_reason == 'bad_document' %}
+                  <span class="badge bg-label-secondary me-1">Отказ: Плохое качество фото документа</span>
+                  <span class="badge bg-label-primary me-1">На редактирование</span>
+                  {% elif proposal.status == 'rejeted' and proposal.commandant_reason == 'rejeted' %}
+                  <span class="badge bg-label-danger me-1">Отказ: В прошлом году выселен за нарушение</span>
+                  <span class="badge bg-label-danger me-1">Отказано</span>
+                  {% elif proposal.status == 'edit' and proposal.accountant_reason == 'not_paid' %}
+                  <span class="badge bg-label-secondary me-1">Отказ: Не оплачено</span>
+                  <span class="badge bg-label-primary me-1">На редактирование</span>
+                  {% endif %}
+
+
+              </div>
+
+
+            </div>
+            <!-- Vertically Centered Modal -->
+            <hr>
+
+            <p></p>
+            <div class="ms-3 me-3">
+              <div class="d-flex">
+                <label for="defaultFormControlInput" class="fw-bold h-4">Номер заявки:</label>
+                <p class="h-4 ps-2">{{proposal.id}}</p>
+              </div>
+              <div class="d-flex">
+                <label for="defaultFormControlInput" class="fw-bold h-4">ФИО:</label>
+                <p class="h-4 ps-2">{{ proposal.student.last_name }}  {{ proposal.student.first_name }} {{ proposal.student.profile.middle_name }}</p>
+              </div>
+              <div class="d-flex">
+                <label for="defaultFormControlInput" class="fw-bold h-4">Название:</label>
+                <p class="h-4 ps-2">Заявление на заселение в общежитие</p>
+              </div>
+              <div class="d-flex">
+                <label for="defaultFormControlInput" class="fw-bold h-4">Дата создания:</label>
+                <p class="h-4 ps-2">{{ proposal.created_at|date:'Y-m-d H:i' }}</p>
+              </div>
+              <div class="card mb-2 mt-2">
+                <a class="btn btn-outline-primary p-1" href="{% url 'applydetail' proposal.id %}">Подробнее</a>
+              </div>
+
+
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+
+
+
+  <!--/ Transactions -->
+</div>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
+
+<head>
+  {% include 'application/inc/head.html' %}
+</head>
+
+
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <!-- / Menu -->
+      <div class="layout-page">
+        <!-- Navbar -->
+        {% include 'application/inc/header.html' %}
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+
+          <!-- / Content -->
+
+          {% block home %}
+          {% endblock %}
+
+          {% block content %}
+          {% endblock %}
+
+          {% block document %}
+          {% endblock %}
+
+          {% block documentcreate %}
+          {% endblock %}
+
+          {% block application %}
+          {% endblock %}
+
+          {% block applicationform %}
+          {% endblock %}
+
+          {% block applies %}
+          {% endblock %}
+
+          {% block applydetail %}
+          {% endblock %}
+
+
+          <footer class="content-footer footer bg-footer-theme">
+          </footer>
+          <!-- / Footer -->
+
+          <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
+
+
+
+  <script type="text/javascript">
+    function cloneElement() {
+      var count = 1;
+      var html = document.getElementById('test').innerHTML;
+      var clone = document.createElement('span');
+      clone.innerHTML = html;
+      document.getElementById('clones').appendChild(clone);
+    }
+  </script>
+
+
+
+
+  <script src="{% static 'core/vendor/libs/jquery/jquery.js' %}"></script>
+  <script src="{% static 'core/vendor/libs/popper/popper.js' %}"></script>
+  <script src="{% static 'core/vendor/js/bootstrap.js' %}"></script>
+  <script src="{% static 'core/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+
+  <script src="{% static 'core/vendor/js/menu.js' %}"></script>
+  <!-- endbuild -->
+
+  <!-- Vendors JS -->
+  <script src="{% static 'core/vendor/libs/apex-charts/apexcharts.js' %}"></script>
+
+  <!-- Main JS -->
+  <script src="{% static 'core/js/main.js' %}"></script>
+
+  <!-- Page JS -->
+  <script src="{% static 'core/js/dashboards-analytics.js' %}"></script>
+  
+
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block signup %}
+<div class="container-xxl">
+  <div class="authentication-wrapper authentication-basic container-p-y">
+    <div class="authentication-inner">
+      <!-- Register Card -->
+      <div class="card">
+        <div class="card-body">
+
+          <div class="btn-group" style="margin-right:10px;">
+            <form class="lang-form" action="{% url 'set_language' %}" method="post">
+              {% csrf_token %}
+              <input class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" name="next" type="hidden" value="{{ request.path }}">
+              <select class="dropdown-item btn-sm" name="language" onchange="this.form.submit()">
+                  {% get_current_language as LANGUAGE_CODE %}
+                  {% get_available_languages as LANGUAGES %}
+                  {% get_language_info_list for LANGUAGES as languages %}
+                  {% for language in languages %}
+                      <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+                          {{ language.name_local }}
+                      </option>
+                  {% endfor %}
+              </select>
+          </form>
+        </div>
+          <!-- Logo -->
+
+          <!-- /Logo -->
+          <h4 class="mb-2">{% trans "Приветствую тебя, абитуриент!" %}👋</h4>
+          <p class="mb-4">{% trans "Эта платформа поможет тебе в поступлении в Yessenov University." %}</p>
+          <p class="text-primary">{% trans "При вводе почты будьте внимательны, так как на указанный адрес будет отправлена ссылка для верификации." %}</p>
+
+          <form id="formAuthentication" class="mb-3"  method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              {% if form.email.errors %}
+              <ul class="errorlist">
+                {% for error in form.email.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Электронная почта"
+                autocomplete="email"
+                required=""
+                autofocus
+                {% if form.email.value %}  value="{{ form.email.value }}" {% endif %}
+              />
+            </div>
+            <p class="text-primary">{% trans "Пароль должен содержать как минимум 8 символ, и как минимум одну цифру." %}</p>
+            <div class="mb-3 form-password-toggle">
+              <label class="form-label" for="id_password1">Пароль</label>
+              {% if form.password1.errors %}
+
+                {% for error in form.password1.errors %}
+                  <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+
+              {% endif %}
+              <div class="input-group input-group-merge">
+
+                <input
+                  type="password"
+                  id="id_password1"
+                  class="form-control"
+                  name="password1"
+                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                  aria-describedby="password"
+                  autocomplete="new-password"
+                  required=""
+                />
+                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+              </div>
+            </div>
+            <div class="mb-3 form-password-toggle">
+              <label class="form-label" for="id_password2">{% trans "Повторите пароль" %}</label>
+              {% if form.password2.errors %}
+
+                {% for error in form.password2.errors %}
+                  <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+
+              {% endif %}
+              <div class="input-group input-group-merge">
+
+                <input
+                  type="password"
+                  id="id_password2"
+                  class="form-control"
+                  name="password2"
+                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                  aria-describedby="password"
+                  autocomplete="new-password"
+                  required=""
+                />
+                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+              </div>
+            </div>
+
+
+            <button class="btn btn-primary d-grid w-100" type="submit">{% trans "Зарегистрироваться" %}</button>
+          </form>
+
+          <p class="text-center">
+            <span>{% trans "Уже зарегистрированы?" %}</span>
+            <a href="{% url 'login' %}">
+              <span>{% trans "Войти" %}</span>
+            </a>
+          </p>
+        </div>
+      </div>
+      <!-- Register Card -->
+    </div>
+  </div>
+</div>
+      
+      {% endblock %}

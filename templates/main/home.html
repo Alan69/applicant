@@ -1,0 +1,254 @@
+{% extends "application/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block home %}
+
+<style>
+    .copy-tooltip {
+        display: none;
+        position: absolute;
+        bottom: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px 8px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .copy-button .copy-tooltip.show-tooltip {
+          display: block;
+          opacity: 1;
+          transform: translateX(-50%) translateY(-5px);
+      }
+</style>
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+    <div class="col-lg-8 mb-4 order-0">
+      <div class="card">
+        <div class="d-flex align-items-end row">
+          <div class="col-sm-7">
+            <div class="card-body">
+              {% if proposals.status == 'accepted' or proposals.status == 'added' %}
+              <h5 class="card-title text-primary">{% trans "Поздравляем с поступлением в YU!" %}🎉 </h5>
+              <p class="mb-4">
+                {% trans "Мы рады приветствовать вас в YU! Вам ниже представлена информация о том, как получить доступ к нашим обучающим платформам и онлайн-ресурсам. " %}
+              </p>
+              {% else %}
+              <h5 class="card-title text-primary">{% trans "Добро пожаловать, в YU! " %}🎉 </h5>
+
+              <p class="mb-4">
+                {% trans "Мы предлагаем уникальные программы, преподавателей-экспертов и современные учебные ресурсы. " %}
+              </p>
+
+              {% endif %}
+
+              <div class="btn-group" style="margin-right:10px;">
+                <form class="lang-form" action="{% url 'set_language' %}" method="post">
+                  {% csrf_token %}
+                  <input class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" name="next" type="hidden" value="{{ request.path }}">
+                  <select class="dropdown-item btn-sm" name="language" onchange="this.form.submit()">
+                      {% get_current_language as LANGUAGE_CODE %}
+                      {% get_available_languages as LANGUAGES %}
+                      {% get_language_info_list for LANGUAGES as languages %}
+                      {% for language in languages %}
+                          <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+                              {{ language.name_local }}
+                          </option>
+                      {% endfor %}
+                  </select>
+              </form>
+            </div>
+              <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-primary "> Выйти </a>
+            </div>
+          </div>
+
+          <div class="col-sm-5 text-center text-sm-left">
+
+            <div class="card-body pb-0 px-0 px-md-4">
+
+              <img src="{% static 'core/img/illustrations/apply2.png' %}" height="140" alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png" data-app-light-img="illustrations/man-with-laptop-light.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--/ Transactions -->
+  </div>
+  {% if user.is_authenticated %}
+  {% if not proposals %}
+
+  <div class="row">
+    <div class="col-lg-8 mb-4 order-0">
+      <h6 class="text-muted" style="font-size: 0.8rem;">{% trans "Подать заявку с аккаунта " %}{{ request.user.email }}</h6>
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">{% trans "Хочешь поступить в Yessenov University?" %}</h5>
+
+          <p class="card-text">{% trans "Подай заявку и получи идентификационный код вашей заявки" %}</p>
+          <a href="{% url 'application' %}" class="btn btn-primary">{% trans "Подать заявку" %}</a>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    {% if proposals.univer_id %}
+    <div class="row">
+      <div class="col-lg-8 mb-4 order-0">
+        <h6 class="text-muted" style="font-size: 0.8rem;">{% trans "Логин и пароль от id.yu.edu.kz " %}</h6>
+        <div class="card text-center">
+          <div class="card-body">
+              <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="basic-default-name">Логин:</label>
+                  <div class="col-sm-8">
+                      <div class="input-group input-group-merge">
+                          <input
+                              type="text"
+                              class="form-control text-primary copy-input"
+                              id="username_input"
+                              readonly
+                          />
+                          <span class="input-group-text copy-button">
+                              <i class="bx bx-copy cursor-pointer"></i>
+                              <span class="copy-tooltip">Скопировано</span>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+              <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label" for="basic-default-name">Одноразовый пароль:</label>
+                  <div class="col-sm-8">
+                      <div class="input-group input-group-merge">
+                          <input
+                              type="text"
+                              class="form-control text-primary copy-input"
+                              id="temporary_password_input"
+                              readonly
+                          />
+                          <span class="input-group-text copy-button">
+                              <i class="bx bx-copy cursor-pointer"></i>
+                              <span class="copy-tooltip">Скопировано</span>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+      </div>
+      </div>
+      <div style="margin-bottom:20px;" class="card accordion-item">
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button
+                          type="button"
+                          class="accordion-button collapsed"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#accordionTwo"
+                          aria-expanded="false"
+                          aria-controls="accordionTwo"
+                        >
+                          Подробнее
+                        </button>
+                      </h2>
+                      <div
+                        id="accordionTwo"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingTwo"
+                        data-bs-parent="#accordionExample"
+                      >
+                        <div class="accordion-body">
+                        <div class="">
+            <p><strong>1.</strong> id.yu.edu.kz – общий портал. Через этот сайт вы можете получить доступ ко всем вашим занятиям и вопросам.</p>
+            <p><a href="#" target="_blank">Перейти на сайт id.yu.edu.kz</a></p>
+            <p><strong>2.</strong> На этом сайте вы найдете:</p>
+            <ul>
+                <li>@yu.edu.kz – корпоративная почта;</li>
+                <li>Canvas LMS – платформа для онлайн обучения;</li>
+                <li>Lessons</li>
+            </ul>
+            <p><strong>3.</strong> Когда сайт id.yu.edu.kz будет доступен, вы обязаны добавить дополнительный адрес вашей личной почты и установить новый пароль! Для этого перейдите на Главную страницу, затем настройки, и в разделе "Резервная почта" (Добавить резервную почту) внесите свой дополнительный адрес. Это важно в случае, если вы забудете пароль. Вы сможете восстановить его через вашу личную почту.</p>
+            <p><strong>4.</strong> Если у вас возникнут вопросы или затруднения в понимании предоставленной информации, обязательно обращайтесь к своему личному эдвайзеру. Эдвайзеры – это специалисты, работающие в вашем деканате, готовые оказать вам помощь и дать необходимые разъяснения. Для того чтобы узнать, кто является вашим личным эдвайзером, обратитесь в деканат.</p>
+          </div>
+        </div>
+      </div>
+                  </div>
+      {% endif %}
+    <div class="row">
+      <div class="col-lg-8 mb-4 order-0">
+        <h6 class="text-muted" style="font-size: 0.8rem;">{% trans "Заявки с аккаунта" %} {{ request.user.email }}</h6>
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">{% trans "Идентификационный код вашей заявки" %} </h5>
+            <h2 class="card-title">{{proposals.random_number}}</h2>
+            <h5 class="card-title">{% trans "Факультет:" %} {{proposals.faculty}}</h5>
+
+            <p class="card-text">{% trans "Статус: " %}
+              {% if proposals.status == 'new' %}
+              <span class="badge bg-label-warning me-1">{% trans "Заявка создана" %}</span>
+              {% elif proposals.status == 'checking' %}
+              <span class="badge bg-label-success me-1">{% trans "Заявка на рассмотрении" %}</span>
+              {% elif proposals.status == 'accepted' or proposals.status == 'added' %}
+              <span class="badge bg-label-info me-1">{% trans "Заявка принята" %}</span>
+              {% elif proposals.status == 'rejeted' %}
+              <span class="badge bg-label-danger me-1">{% trans "Заявка отказана" %}</span>
+              {% endif %}
+            </p>
+            {% if proposals %}
+
+      <a href="{% url 'applicationedit' proposals.pk %}" class="btn btn-primary">{% trans "Посмотреть заявку" %}</a>
+      <!-- <a href="{% url 'generate_word' %}" class="btn btn-primary">Документ</a>
+      <a href="{% url 'get_dogovor' %}" class="btn btn-primary">Договор</a> -->
+
+  {% endif %}
+
+
+
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <!--/ Transactions -->
+
+
+    </div>
+  </div>
+    </div>
+  {% endif %}
+
+ 
+
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var copyButtons = document.querySelectorAll('.copy-button');
+
+          copyButtons.forEach(function(button) {
+              button.addEventListener('click', function() {
+                  var copyTarget = button.closest('.input-group-merge').querySelector('.copy-input');
+
+                  if (copyTarget) {
+                      copyTarget.select();
+                      document.execCommand('copy');
+                      button.querySelector('.copy-tooltip').classList.add('show-tooltip');
+                      setTimeout(function() {
+                          button.querySelector('.copy-tooltip').classList.remove('show-tooltip');
+                      }, 1500); // Установите желаемое время видимости сообщения
+                  }
+              });
+          });
+      });
+  </script>
+
+
+
+
+
+  {% endblock %}

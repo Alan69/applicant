@@ -1,0 +1,1750 @@
+{% extends 'application/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block applicationform %}
+{% if user.is_authenticated %}
+<div class="container-xxl flex-grow-1 container-p-y">
+
+  <form method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card mb-4">
+
+          <h5 class="card-header fw-bold">{% trans "1. Личные данные" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+            <div>
+              <label for="{{ form.last_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Фамилия:" %}</label>
+              {% if form.last_name.errors %}
+              <ul class="errorlist">
+                {% for error in form.last_name.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.last_name.name }}" id="{{ form.last_name.id_for_label }}" {% if form.last_name.value %} value="{{ form.last_name.value }}" {% endif %}
+                {% if form.last_name.field.required %}required{% endif %}>
+            </div>
+
+            <div>
+              <label for="{{ form.first_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Имя:" %}</label>
+              {% if form.first_name.errors %}
+              <ul class="errorlist">
+                {% for error in form.first_name.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.first_name.name }}" id="{{ form.first_name.id_for_label }}" {% if form.first_name.value %} value="{{ form.first_name.value }}" {% endif %}
+                {% if form.first_name.field.required %}required{% endif %}>
+            </div>
+
+
+            <div>
+              <label for="{{ form.middle_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Отчество:" %}</label>
+              {% if form.middle_name.errors %}
+              <ul class="errorlist">
+                {% for error in form.middle_name.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.middle_name.name }}" id="{{ form.middle_name.id_for_label }}" {% if form.middle_name.value %} value="{{ form.middle_name.value }}" {% endif %}
+                {% if form.middle_name.field.required %}required{% endif %}>
+            </div>
+
+
+
+            <div>
+              <label for="{{ form.first_name_en.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Фамилия на английском:" %}</label>
+              {% if form.first_name_en.errors %}
+              <ul class="errorlist">
+                {% for error in form.first_name_en.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.first_name_en.name }}" id="{{ form.first_name_en.id_for_label }}" {% if form.first_name_en.value %} value="{{ form.first_name_en.value }}" {% endif %}
+                {% if form.first_name_en.field.required %}required{% endif %}
+                pattern="[A-Za-z]+" placeholder="Введите только латинские буквы">
+            </div>
+
+            <div>
+              <label for="{{ form.last_name_en.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Имя на английском:" %}</label>
+              {% if form.last_name_en.errors %}
+              <ul class="errorlist">
+                {% for error in form.last_name_en.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.last_name_en.name }}" id="{{ form.last_name_en.id_for_label }}" {% if form.last_name_en.value %} value="{{ form.last_name_en.value }}" {% endif %}
+                {% if form.last_name_en.field.required %}required{% endif %}
+                pattern="[A-Za-z]+" placeholder="Введите только латинские буквы">
+            </div>
+
+            <div>
+              <label for="{{ form.middle_name_en.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Отчество на английском:" %}</label>
+              {% if form.middle_name_en.errors %}
+              <ul class="errorlist">
+                {% for error in form.middle_name_en.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.middle_name_en.name }}" id="{{ form.middle_name_en.id_for_label }}" {% if form.middle_name_en.value %} value="{{ form.middle_name_en.value }}" {% endif %}
+                {% if form.middle_name_en.field.required %}required{% endif %}
+                pattern="[A-Za-z]+" placeholder="Введите только латинские буквы">
+            </div>
+            <div>
+              <label for="{{ form.phone_number.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Номер телефона:" %}</label>
+              {% if form.phone_number.errors %}
+              <ul class="errorlist">
+                {% for error in form.phone_number.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="tel" class="form-control" name="{{ form.phone_number.name }}" id="{{ form.phone_number.id_for_label }}" {% if form.phone_number.value %} value="{{ form.phone_number.value }}" {% endif %} placeholder="+7(___) ___-____"
+                {% if form.phone_number.field.required %}required{% endif %}>
+            </div>
+            <div>
+              <label for="{{ form.citizenship.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Гражданство:" %}</label>
+              {% if form.citizenship.errors %}
+              <ul class="errorlist">
+                {% for error in form.citizenship.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.citizenship.name }}" id="{{ form.citizenship.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.citizenship.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+            <div>
+              <label for="{{ form.nationality.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Национальность:" %}</label>
+              {% if form.nationality.errors %}
+              <ul class="errorlist">
+                {% for error in form.nationality.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.nationality.name }}" id="{{ form.nationality.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.nationality.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+
+            <div>
+              <label for="{{ form.gender.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Пол:" %}</label>
+              {% if form.gender.errors %}
+              <ul class="errorlist">
+                {% for error in form.gender.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.gender.name }}" id="{{ form.gender.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.gender.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+            <div>
+              <label for="{{ form.family_status.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Семейное положение:" %}</label>
+              {% if form.family_status.errors %}
+              <ul class="errorlist">
+                {% for error in form.family_status.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.family_status.name }}" id="{{ form.family_status.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.family_status.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+
+          <h5 class="card-header fw-bold">{% trans "2. Паспортные данные" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+            <div>
+              <label for="{{ form.document_type.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Тип документа:" %}</label>
+              {% if form.document_type.errors %}
+              <ul class="errorlist">
+                {% for error in form.document_type.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.document_type.name }}" id="{{ form.document_type.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.document_type.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+
+            <div>
+              <label for="{{ form.iin.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "ИИН:" %}</label>
+              {% if form.iin.errors %}
+              <ul class="errorlist">
+                {% for error in form.iin.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.iin.name }}" id="{{ form.iin.id_for_label }}" {% if form.iin.value %} value="{{ form.iin.value }}" {% endif %} required>
+            </div>
+
+            <div>
+              <label for="{{ form.identification_number.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "№ документа:" %}</label>
+              {% if form.identification_number.errors %}
+              <ul class="errorlist">
+                {% for error in form.identification_number.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.identification_number.name }}" id="{{ form.ridentification_number.id_for_label }}" {% if form.identification_number.value %} value="{{ form.identification_number.value }}"
+                {% endif %} required>
+            </div>
+
+            <div>
+              <label for="{{ form.identification_issued_by.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Кем выдан:" %}</label>
+              {% if form.identification_issued_by.errors %}
+              <ul class="errorlist">
+                {% for error in form.identification_issued_by.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.identification_issued_by.name }}" id="{{ form.identification_issued_by.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.identification_issued_by.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+
+            <div>
+              <label for="{{ form.identification_issue_date.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дата выдачи:" %}</label>
+              {% if form.identification_issue_date.errors %}
+              <ul class="errorlist">
+                {% for error in form.identification_issue_date.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="date" class="form-control" name="{{ form.identification_issue_date.name }}" id="{{ form.identification_issue_date.id_for_label }}" placeholder="дд.мм.гггг" {% if form.identification_issue_date.value %}
+                value="{{ form.identification_issue_date.value }}" {% endif %} required>
+            </div>
+
+            <div>
+              <label for="{{ form.identification_expiration_date.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дата истечение срока:" %}</label>
+              {% if form.identification_expiration_date.errors %}
+              <ul class="errorlist">
+                {% for error in form.identification_expiration_date.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="date" class="form-control" name="{{ form.identification_expiration_date.name }}" id="{{ form.identification_expiration_date.id_for_label }}" placeholder="дд.мм.гггг" {% if form.identification_expiration_date.value %}
+                value="{{ form.identification_expiration_date.value }}" {% endif %} required>
+            </div>
+
+            <div>
+              <label for="{{ form.identification_birth_date.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дата рождения:" %}</label>
+              {% if form.identification_birth_date.errors %}
+              <ul class="errorlist">
+                {% for error in form.identification_birth_date.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="date" class="form-control" name="{{ form.identification_birth_date.name }}" id="{{ form.identification_birth_date.id_for_label }}" placeholder="дд.мм.гггг" {% if form.identification_birth_date.value %}
+                value="{{ form.identification_birth_date.value }}" {% endif %} required>
+            </div>
+
+            <div>
+              <label for="{{ form.identification_birth_country.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Страна рождения (по удостоверению):" %}</label>
+              {% if form.identification_birth_country.errors %}
+              <ul class="errorlist">
+                {% for error in form.identification_birth_country.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.identification_birth_country.name }}" id="{{ form.identification_birth_country.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.identification_birth_country.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+
+            <div>
+              <label for="{{ form.identification_birth_place.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Место рождения (по удостоверению):" %}</label>
+              {% if form.identification_birth_place.errors %}
+              <ul class="errorlist">
+                {% for error in form.identification_birth_place.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.identification_birth_place.name }}" id="{{ form.identification_birth_place.id_for_label }}" {% if form.identification_birth_place.value %}
+                value="{{ form.identification_birth_place.value }}" {% endif %} required>
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+
+        <div class="card mb-4">
+
+          <h5 class="card-header fw-bold">{% trans "3. Образовательная программа" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+            <div>
+              <label for="{{ form.form_of_study.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Форма обучения:" %}</label>
+              {% if form.form_of_study.errors %}
+              <ul class="errorlist">
+                {% for error in form.form_of_study.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.form_of_study.name }}" id="{{ form.form_of_study.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.form_of_study.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+            <div>
+              <label for="{{ form.lang_of_study.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Язык обучения:" %}</label>
+              {% if form.lang_of_study.errors %}
+              <ul class="errorlist">
+                {% for error in form.lang_of_study.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.lang_of_study.name }}" id="{{ form.lang_of_study.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.lang_of_study.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+            <div>
+              <label for="{{ form.payment_form.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Форма оплаты:" %}</label>
+              {% if form.payment_form.errors %}
+              <ul class="errorlist">
+                {% for error in form.payment_form.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.payment_form.name }}" id="{{ form.payment_form.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.payment_form.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+            <div>
+              <label for="{{ form.education_stage.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Ступень обучения:" %}</label>
+              {% if form.education_stage.errors %}
+              <ul class="errorlist">
+                {% for error in form.education_stage.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.education_stage.name }}" id="{{ form.education_stage.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.education_stage.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.educ_plan_group.id_for_label }}" class="fw-bold h-4 pb-2">{% trans  "Группа специальности:" %}</label>
+              {% if form.educ_plan_group.errors %}
+              <ul class="errorlist">
+                {% for error in form.educ_plan_group.errors %}
+                <li class="alert alert-danger">{ error }</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.educ_plan_group.name }}" id="{{ form.educ_plan_group.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.educ_plan_group.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.educ_plan.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Образовательная программа:" %}</label>
+              {% if form.educ_plan.errors %}
+              <ul class="errorlist">
+                {% for error in form.educ_plan.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.educ_plan.name }}" id="{{ form.educ_plan.id_for_label }}" {% if form.educ_plan.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.educ_plan.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.faculty.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Факультет:" %}</label>
+              {% if form.faculty.errors %}
+              <ul class="errorlist">
+                {% for error in form.faculty.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.faculty.name }}" id="{{ form.faculty.id_for_label }}" {% if form.faculty.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.faculty.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <div class="card mb-4">
+
+          <h5 class="card-header fw-bold">{% trans "4. Данные сертификата ЕНТ, КТ, IELTS или TOEFL" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+            <div>
+              <label for="{{ form.basis_for_enrollment.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Основание для зачисления:" %}</label>
+              {% if form.basis_for_enrollment.errors %}
+              <ul class="errorlist">
+                {% for error in form.basis_for_enrollment.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.basis_for_enrollment.name }}" id="{{ form.basis_for_enrollment.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.basis_for_enrollment.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+            <div id="hiddenFields">
+              <div>
+                <label for="{{ form.ict_number.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "ТЖК:" %}</label>
+                {% if form.ict_number.errors %}
+                <ul class="errorlist">
+                  {% for error in form.ict_number.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="text" class="form-control" name="{{ form.ict_number.name }}" id="{{ form.ict_number.id_for_label }}" {% if form.ict_number.value %} value="{{ form.ict_number.value }}" {% endif %} required>
+              </div>
+              <div>
+                <label for="{{ form.testing_certificate_date.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дата выдачи сертификата:" %}</label>
+                {% if form.testing_certificate_date.errors %}
+                <ul class="errorlist">
+                  {% for error in form.testing_certificate_date.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="date" class="form-control" name="{{ form.testing_certificate_date.name }}" id="{{ form.testing_certificate_date.id_for_label }}" {% if form.testing_certificate_date.value %}
+                  value="{{ form.testing_certificate_date.value }}" {% endif %} placeholder="дд.мм.гггг" required>
+              </div>
+              <div>
+                <label for="{{ form.testing_certificate_series.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Серия:" %}</label>
+                {% if form.testing_certificate_series.errors %}
+                <ul class="errorlist">
+                  {% for error in form.testing_certificate_series.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="text" class="form-control" name="{{ form.testing_certificate_series.name }}" id="{{ form.testing_certificate_series.id_for_label }}" {% if form.testing_certificate_series.value %}
+                  value="{{ form.testing_certificate_series.value }}" {% endif %} required>
+              </div>
+              <div>
+                <label for="{{ form.testing_certificate_number.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Номер:" %}</label>
+                {% if form.testing_certificate_number.errors %}
+                <ul class="errorlist">
+                  {% for error in form.testing_certificate_number.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="text" class="form-control" name="{{ form.testing_certificate_number.name }}" id="{{ form.testing_certificate_number.id_for_label }}" {% if form.testing_certificate_number.value %}
+                  value="{{ form.testing_certificate_number.value }}" {% endif %} required>
+              </div>
+
+
+              <div>
+                <label for="{{ form.mathematical_literacy.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Математическая грамотность (Балл):" %}</label>
+                {% if form.mathematical_literacy.errors %}
+                <ul class="errorlist">
+                  {% for error in form.mathematical_literacy.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="number" class="form-control" name="{{ form.mathematical_literacy.name }}" id="{{ form.mathematical_literacy.id_for_label }}" {% if form.mathematical_literacy.value %} value="{{ form.mathematical_literacy.value }}"
+                  {% endif %} required>
+              </div>
+              <div>
+                <label for="{{ form.reading_literacy.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Грамотность чтения (Балл):" %}</label>
+                {% if form.reading_literacy.errors %}
+                <ul class="errorlist">
+                  {% for error in form.reading_literacy.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="number" class="form-control" name="{{ form.reading_literacy.name }}" id="{{ form.reading_literacy.id_for_label }}" {% if form.reading_literacy.value %} value="{{ form.reading_literacy.value }}" {% endif %} required>
+              </div>
+              <div>
+                <label for="{{ form.history_of_kazakhstan.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "История Казахстана (Балл):" %}</label>
+                {% if form.history_of_kazakhstan.errors %}
+                <ul class="errorlist">
+                  {% for error in form.history_of_kazakhstan.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="number" class="form-control" name="{{ form.history_of_kazakhstan.name }}" id="{{ form.history_of_kazakhstan.id_for_label }}" {% if form.history_of_kazakhstan.value %} value="{{ form.history_of_kazakhstan.value }}"
+                  {% endif %} required>
+              </div>
+
+              <div>
+                <label for="{{ form.profile_subject_1_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Профильный предмет 1" %}</label>
+                {% if form.profile_subject_1_name.errors %}
+                <ul class="errorlist">
+                  {% for error in form.profile_subject_1_name.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <select class="form-select" name="{{ form.profile_subject_1_name.name }}" id="{{ form.profile_subject_1_name.id_for_label }}" required>
+                  <!-- Опции для выбора области -->
+                  {% for widget in form.profile_subject_1_name.subwidgets %}
+                  {{ widget }}
+                  {% endfor %}
+                </select>
+
+              </div>
+
+              <div>
+                <label for="{{ form.profile_subject_1.id_for_label }}" id="{{ form.profile_subject_1.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Балл" %}</label>
+                {% if form.profile_subject_1.errors %}
+                <ul class="errorlist">
+                  {% for error in form.profile_subject_1.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="number" class="form-control" name="{{ form.profile_subject_1.name }}" id="{{ form.profile_subject_1.id_for_label }}" {% if form.profile_subject_1.value %} value="{{ form.profile_subject_1.value }}" {% endif %} required>
+              </div>
+
+              <div>
+                <label for="{{ form.profile_subject_2_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Профильный предмет 2" %}</label>
+                {% if form.profile_subject_2_name.errors %}
+                <ul class="errorlist">
+                  {% for error in form.profile_subject_2_name.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <select class="form-select" name="{{ form.profile_subject_2_name.name }}" id="{{ form.profile_subject_2_name.id_for_label }}" required>
+                  <!-- Опции для выбора области -->
+                  {% for widget in form.profile_subject_2_name.subwidgets %}
+                  {{ widget }}
+                  {% endfor %}
+                </select>
+
+              </div>
+
+
+              <div>
+                <label for="{{ form.profile_subject_2.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Балл" %}</label>
+                {% if form.profile_subject_2.errors %}
+                <ul class="errorlist">
+                  {% for error in form.profile_subject_2.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="number" class="form-control" name="{{ form.profile_subject_2.name }}" id="{{ form.profile_subject_2.id_for_label }}" {% if form.profile_subject_2.value %} value="{{ form.profile_subject_2.value }}" {% endif %} required>
+              </div>
+              <div>
+                <label for="{{ form.competition_score.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Балл конкурса:" %}</label>
+                {% if form.competition_score.errors %}
+                <ul class="errorlist">
+                  {% for error in form.competition_score.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="number" class="form-control" name="{{ form.competition_score.name }}" id="{{ form.competition_score.id_for_label }}" {% if form.competition_score.value %} value="{{ form.competition_score.value }}" {% endif %} required>
+              </div>
+              <div>
+                <label for="{{ form.grant_certificate_number.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "№ сертификата гранта (при наличии):" %}</label>
+                {% if form.grant_certificate_number.errors %}
+                <ul class="errorlist">
+                  {% for error in form.grant_certificate_number.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="text" class="form-control" name="{{ form.grant_certificate_number.name }}" id="{{ form.grant_certificate_number.id_for_label }}" {% if form.competition_score.value %} value="{{ form.grant_certificate_number.value }}"
+                  {% endif %}>
+              </div>
+              <div>
+                <label for="{{ form.grant_certificate_date.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дата выдачи сертификата:" %}</label>
+                {% if form.grant_certificate_date.errors %}
+                <ul class="errorlist">
+                  {% for error in form.grant_certificate_date.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <input type="date" class="form-control" name="{{ form.grant_certificate_date.name }}" id="{{ form.grant_certificate_date.id_for_label }}" placeholder="дд.мм.гггг" {% if form.grant_certificate_date.value %}
+                  value="{{ form.grant_certificate_date.value }}" {% endif %}>
+              </div>
+
+            </div>
+
+            <div id="IELTS">
+              <div>
+                <p>{% trans "Загрузите сертификат IELTS или TOEFL" %}</p>
+                <input type="file" class="form-control" name="file" placeholder="Сертификат">
+                <!-- ielts_toefl_sertificate_file -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="col-md-6">
+        <div class="card mb-4">
+
+          <h5 class="card-header fw-bold">{% trans "5. Данные учебного заведения" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+            <div>
+
+              <label for="{{ form.educational_institution.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Вид учебного заведения:" %}</label>
+              {% if form.educational_institution.errors %}
+              <ul class="errorlist">
+                {% for error in form.educational_institution.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.educational_institution.name }}" id="{{ form.educational_institution.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.educational_institution.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+            <div>
+              <label for="{{ form.institution_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Название учебного заведения:" %}</label>
+              {% if form.institution_name.errors %}
+              <ul class="errorlist">
+                {% for error in form.institution_name.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.institution_name.name }}" id="{{ form.institution_name.id_for_label }}" {% if form.institution_name.value %} value="{{ form.institution_name.value }}" {% endif %} required>
+            </div>
+            <div>
+              <label for="{{ form.educational_country.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Страна:" %}</label>
+              {% if form.educational_country.errors %}
+              <ul class="errorlist">
+                {% for error in form.educational_country.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.educational_country.name }}" id="{{ form.educational_country.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.educational_country.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.educational_area.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Область:" %}</label>
+              {% if form.educational_area.errors %}
+              <ul class="errorlist">
+                {% for error in form.educational_area.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.educational_area.name }}" id="{{ form.educational_area.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.educational_area.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+
+            <div>
+              <label for="{{ form.educational_region.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Район:" %}</label>
+              {% if form.educational_region.errors %}
+              <ul class="errorlist">
+                {% for error in form.educational_region.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.educational_region.name }}" id="{{ form.educational_region.id_for_label }}" {% if form.educational_region.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.educational_region.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.educational_place_status.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Статус населенного пункта, в котором находится учебное заведение:" %}</label>
+              {% if form.educational_place_status.errors %}
+              <ul class="errorlist">
+                {% for error in form.educational_place_status.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.educational_place_status.name }}" id="{{ form.educational_place_status.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.educational_place_status.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+
+            <div>
+              <label for="{{ form.educational_certificate_date.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дата выдачи документа об образовании (аттестат, диплом):" %}</label>
+              {% if form.educational_certificate_date.errors %}
+              <ul class="errorlist">
+                {% for error in form.educational_certificate_date.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="date" class="form-control" name="{{ form.educational_certificate_date.name }}" id="{{ form.educational_certificate_date.id_for_label }}" required
+                placeholder="дд.мм.гггг" {% if form.educational_certificate_date.value %} value="{{ form.educational_certificate_date.value }}" {% endif %}>
+            </div>
+            <div>
+              <label for="{{ form.educational_certificate_series.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Серия, № документа об образовании (аттестат, диплом):" %}</label>
+              {% if form.educational_certificate_series.errors %}
+              <ul class="errorlist">
+                {% for error in form.educational_certificate_series.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.educational_certificate_series.name }}" id="{{ form.educational_certificate_series.id_for_label }}" required
+                {% if form.educational_certificate_series.value %} value="{{ form.educational_certificate_series.value }}" {% endif %}>
+            </div>
+
+            <div class="input-group altyn" style="margin-top: 15px;">
+              <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" id="{{ form.golden_badge.id_for_label }}" name="{{ form.golden_badge.name }}"
+                  {% if form.golden_badge.value %}checked{% endif %} />
+              </div>
+              <input type="text" class="form-control" aria-label="Text input with checkbox" value="Алтын белгі" readonly/>
+            </div>
+
+            <div class="golden_gile">
+              <label for="{{ form.golden_badge_file.id_for_label }}" class="form-label">{% trans "Потверждающий документ (Скан аттестата)" %}</label>
+              <input class="form-control" name="{{ form.golden_badge_file.name }}" type="file" id="{{ form.golden_badge_file.id_for_label }}" required value="{{ form.golden_badge_file.value}}" />
+            </div>
+
+
+          </div>
+        </div>
+        <div class="card mb-4">
+
+          <h5 class="card-header fw-bold">{% trans "6. Адрес проживания" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+            <div>
+              <label for="{{ form.address_area.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Область:" %}</label>
+              {% if form.address_area.errors %}
+              <ul class="errorlist">
+                {% for error in form.address_area.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.address_area.name }}" id="{{ form.address_area.id_for_label }}" required>
+                <!-- Опции для выбора области -->
+                {% for widget in form.address_area.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+              </div>
+            <div>
+              <label for="{{ form.address_region.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Район:" %}</label>
+              {% if form.address_region.errors %}
+              <ul class="errorlist">
+                {% for error in form.address_region.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.address_region.name }}" id="{{ form.address_region.id_for_label }}" {% if form.address_region.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.address_region.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.address_city.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Село:" %}</label>
+              {% if form.address_city.errors %}
+              <ul class="errorlist">
+                {% for error in form.address_city.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.address_city.name }}" id="{{ form.address_city.id_for_label }}" {% if form.address_city.value %} value="{{ form.address_city.value }}" {% endif %}
+                {% if form.address_city.field.required %}required{% endif %}>
+            </div>
+
+            <div>
+              <label for="{{ form.address_street.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Улица:" %}</label>
+              {% if form.address_street.errors %}
+              <ul class="errorlist">
+                {% for error in form.address_street.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.address_street.name }}" id="{{ form.address_street.id_for_label }}" {% if form.address_street.value %} value="{{ form.address_street.value }}" {% endif %}
+                {% if form.address_street.field.required %}required{% endif %}>
+            </div>
+
+            <div>
+              <label for="{{ form.address_house.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дом:" %}</label>
+              {% if form.address_house.errors %}
+              <ul class="errorlist">
+                {% for error in form.address_house.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.address_house.name }}" id="{{ form.address_house.id_for_label }}" {% if form.address_house.value %} value="{{ form.address_house.value }}" {% endif %}
+                {% if form.address_house.field.required %}required{% endif %}>
+            </div>
+
+            <div>
+              <label for="{{ form.address_apartment.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Квартира:" %}</label>
+              {% if form.address_apartment.errors %}
+              <ul class="errorlist">
+                {% for error in form.address_apartment.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.address_apartment.name }}" {% if form.address_apartment.value %} value="{{ form.address_apartment.value }}" {% endif %} id="{{ form.address_apartment.id_for_label }}" required>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="card mb-4">
+
+          <h5 class="card-header fw-bold">{% trans "7. Адрес прописки" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+            <div>
+              <label for="{{ form.register_address_area.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Область:" %}</label>
+              {% if form.register_address_area.errors %}
+              <ul class="errorlist">
+                {% for error in form.register_address_area.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.register_address_area.name }}" id="{{ form.register_address_area.id_for_label }}" {% if form.register_address_area.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.register_address_area.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.register_address_region.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Район:" %}</label>
+              {% if form.register_address_region.errors %}
+              <ul class="errorlist">
+                {% for error in form.register_address_region.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.register_address_region.name }}" id="{{ form.register_address_region.id_for_label }}" {% if form.register_address_region.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.register_address_region.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="{{ form.register_address_city.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Село:" %}</label>
+              {% if form.register_address_city.errors %}
+              <ul class="errorlist">
+                {% for error in form.register_address_city.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.register_address_city.name }}" id="{{ form.register_address_city.id_for_label }}" {% if form.register_address_city.value %} value="{{ form.register_address_city.value }}" {% endif %}
+                {% if form.register_address_city.field.required %}required{% endif %}>
+            </div>
+
+            <div>
+              <label for="{{ form.register_address_street.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Улица:" %}</label>
+              {% if form.register_address_street.errors %}
+              <ul class="errorlist">
+                {% for error in form.register_address_street.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.register_address_street.name }}" id="{{ form.register_address_street.id_for_label }}" {% if form.register_address_street.value %} value="{{ form.register_address_street.value }}"
+                {% endif %} {% if form.register_address_street.field.required %}required{% endif %}>
+            </div>
+
+            <div>
+              <label for="{{ form.register_address_house.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Дом:" %}</label>
+              {% if form.register_address_house.errors %}
+              <ul class="errorlist">
+                {% for error in form.register_address_house.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.register_address_house.name }}" id="{{ form.register_address_house.id_for_label }}" {% if form.register_address_house.value %} value="{{ form.register_address_house.value }}"
+                {% endif %} {% if form.register_address_house.field.required %}required{% endif %}>
+            </div>
+            <div>
+              <label for="{{ form.register_address_apartment.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Квартира:" %}</label>
+              {% if form.register_address_apartment.errors %}
+              <ul class="errorlist">
+                {% for error in form.register_address_apartment.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <input type="text" class="form-control" name="{{ form.register_address_apartment.name }}" id="{{ form.register_address_apartment.id_for_label }}" {% if form.register_address_apartment.value %}
+                value="{{ form.register_address_apartment.value }}" {% endif %} {% if form.register_address_apartment.field.required %}required{% endif %}>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="card mb-4">
+          <h5 class="card-header fw-bold">{% trans "8. Дополнительные данные" %}</h5>
+          <hr class="m-2">
+          <div class="card-body">
+              <div>
+                <label for="{{ form.family_position_status.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Семейное положение" %}</label>
+                {% if form.family_position_status.errors %}
+                <ul class="errorlist">
+                  {% for error in form.family_position_status.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <select class="form-select" name="{{ form.family_position_status.name }}" id="{{ form.family_position_status.id_for_label }}" required>
+                  <!-- Опции для выбора области -->
+                  {% for widget in form.family_position_status.subwidgets %}
+                  {{ widget }}
+                  {% endfor %}
+                </select>
+
+              </div>
+
+              <div class="family_position_file">
+                <label for="{{ form.family_position_file.id_for_label }}" class="form-label">{% trans "Потверждающий документ" %}</label>
+                <input class="form-control" name="{{ form.family_position_file.name }}" type="file" id="{{ form.family_position_file.id_for_label }}"  value="{{ form.family_position_file.value}}" required />
+              </div>
+
+              <div class="parent_type">
+                <label for="{{ form.parent_type.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Тип родителя" %}</label>
+                {% if form.parent_type.errors %}
+                <ul class="errorlist">
+                  {% for error in form.parent_type.errors %}
+                  <li class="alert alert-danger">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+                <select name="{{ form.parent_type.name }}" id="{{ form.parent_type.id_for_label }}" class="form-select" required>
+                  {% for value, label in form.parent_type.field.choices %}
+                  <option value="{{ value }}" {% if form.parent_type.value == value %}selected{% endif %}>{% trans "label " %}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+
+              <div class="father">
+                <div>
+                  <label for="{{ form.father_last_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Фамилия отца:" %}</label>
+                  {% if form.father_last_name.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.father_last_name.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.father_last_name.name }}" id="{{ form.father_last_name.id_for_label }}" {% if form.father_last_name.value %} value="{{ form.father_last_name.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.father_first_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Имя отца:" %}</label>
+                  {% if form.father_first_name.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.father_first_name.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.father_first_name.name }}" id="{{ form.father_first_name.id_for_label }}" {% if form.father_first_name.value %} value="{{ form.father_first_name.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.father_middle_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Отчество отца:" %}</label>
+                  {% if form.father_middle_name.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.father_middle_name.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.father_middle_name.name }}" id="{{ form.father_middle_name.id_for_label }}" {% if form.father_middle_name.value %} value="{{ form.father_middle_name.value }}" {% endif %}>
+                </div>
+                <div>
+                  <label for="{{ form.father_profession.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Профессия отца:" %}</label>
+                  {% if form.father_profession.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.father_profession.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.father_profession.name }}" id="{{ form.father_profession.id_for_label }}" {% if form.father_profession.value %} value="{{ form.father_profession.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.father_work.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Место работы отца:" %}</label>
+                  {% if form.father_work.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.father_work.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.father_work.name }}" id="{{ form.father_work.id_for_label }}" {% if form.father_work.value %} value="{{ form.father_work.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.father_phone_number.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Номер телефона отца:" %}</label>
+                  {% if form.father_phone_number.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.father_phone_number.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="tel" class="form-control" name="{{ form.father_phone_number.name }}" id="{{ form.father_phone_number.id_for_label }}" placeholder="+7(___) ___-____" {% if form.father_phone_number.value %}
+                    value="{{ form.father_phone_number.value }}" {% endif %} required>
+                </div>
+              </div>
+
+
+              <div class="mother">
+                <div>
+                  <label for="{{ form.mother_last_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Фамилия матери:" %}</label>
+                  {% if form.mother_last_name.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.mother_last_name.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.mother_last_name.name }}" id="{{ form.mother_last_name.id_for_label }}" {% if form.mother_last_name.value %} value="{{ form.mother_last_name.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.mother_first_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Имя матери:" %}</label>
+                  {% if form.mother_first_name.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.mother_first_name.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.mother_first_name.name }}" id="{{ form.mother_first_name.id_for_label }}" {% if form.mother_first_name.value %} value="{{ form.mother_first_name.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.mother_middle_name.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Отчество матери:" %}</label>
+                  {% if form.mother_middle_name.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.mother_middle_name.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.mother_middle_name.name }}" id="{{ form.mother_middle_name.id_for_label }}" {% if form.mother_middle_name.value %} value="{{ form.mother_middle_name.value }}" {% endif %}>
+                </div>
+                <div>
+                  <label for="{{ form.mother_profession.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Профессия матери:" %}</label>
+                  {% if form.mother_profession.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.mother_profession.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.mother_profession.name }}" id="{{ form.mother_profession.id_for_label }}" {% if form.mother_profession.value %} value="{{ form.mother_profession.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.mother_work.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Место работы матери:" %}</label>
+                  {% if form.mother_work.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.mother_work.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" name="{{ form.mother_work.name }}" id="{{ form.mother_work.id_for_label }}" {% if form.mother_work.value %} value="{{ form.mother_work.value }}" {% endif %} required>
+                </div>
+                <div>
+                  <label for="{{ form.mother_phone_number.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Номер телефона матери:" %}</label>
+                  {% if form.mother_phone_number.errors %}
+                  <ul class="errorlist">
+                    {% for error in form.mother_phone_number.errors %}
+                    <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <input type="tel" class="form-control" name="{{ form.mother_phone_number.name }}" id="{{ form.mother_phone_number.id_for_label }}" placeholder="+7(___) ___-____" {% if form.mother_phone_number.value %}
+                    value="{{ form.mother_phone_number.value }}" {% endif %} required>
+                </div>
+              </div>
+
+
+
+
+
+
+
+            <div>
+              <label for="{{ form.dormitory.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Общежитие:" %}</label>
+              {% if form.dormitory.errors %}
+              <ul class="errorlist">
+                {% for error in form.dormitory.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.dormitory.name }}" id="{{ form.dormitory.id_for_label }}" {% if form.dormitory.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.dormitory.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+
+            <div>
+              <label for="{{ form.english_level.id_for_label }}" class="fw-bold h-4 pb-2">{% trans "Изучаемый иностранный язык:" %}</label>
+              {% if form.english_level.errors %}
+              <ul class="errorlist">
+                {% for error in form.english_level.errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <select class="form-select" name="{{ form.english_level.name }}" id="{{ form.english_level.id_for_label }}" {% if form.english_level.field.required %}required{% endif %}>
+                <!-- Опции для выбора области -->
+                {% for widget in form.english_level.subwidgets %}
+                {{ widget }}
+                {% endfor %}
+              </select>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+        <div class="card mb-4">
+          <button type="submit" class="btn btn-primary">{% trans "Отправить заявку" %}</button>
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+    {% if success_message %}
+    <!-- Modal pop-up and auto close -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <form method="post" enctype='multipart/form-data'>
+          <div class="modal-content">
+            <form method="post" enctype='multipart/form-data'>
+              {% csrf_token %}
+              <div class="mb-2 mt-4 m-3 h5">
+                <p class="text-center">{% trans "Ваша заявка отправлена" %}</p>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="text-center">
+                    <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_48_912)">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M0 35C0 25.7174 3.68749 16.815 10.2513 10.2513C16.815 3.68749 25.7174 0 35 0C44.2826 0 53.185 3.68749 59.7487 10.2513C66.3125 16.815 70 25.7174 70 35C70 44.2826 66.3125 53.185 59.7487 59.7487C53.185 66.3125 44.2826 70 35 70C25.7174 70 16.815 66.3125 10.2513 59.7487C3.68749 53.185 0 44.2826 0 35H0ZM33.0027 49.98L53.1533 24.7893L49.5133 21.8773L32.3307 43.3487L20.16 33.208L17.1733 36.792L33.0027 49.9847V49.98Z"
+                          fill="#6871F6" />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_48_912">
+                          <rect width="70" height="70" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="mb-2 mt-3 m-3">
+                    <p class="text-center ">{% trans "Статус поданной заявки можно посмотреть на главной странице." %}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-4 mt-2 m-5">
+                <a class="btn btn-primary p-1" href="{% url 'home' %}">{% trans "Посмотреть код" %}</a>
+              </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="https://ajaxx.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $("#myModal").modal("show");
+
+      });
+    </script>
+
+    {% endif %}
+
+    <script src="{% static 'core/vendor/js/jquery-1.11.2.min.js' %}"></script>
+    <script src="{% static 'core/vendor/js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'core/vendor/js/jquery.maskedinput.min.js' %}"></script>
+
+    <script type="text/javascript">
+      $("#{{ form.phone_number.id_for_label }}").mask("+7(999) 999-9999");
+    </script>
+    <script type="text/javascript">
+      $("#{{ form.father_phone_number.id_for_label }}").mask("+7(999) 999-9999");
+    </script>
+    <script type="text/javascript">
+      $("#{{ form.mother_phone_number.id_for_label}}").mask("+7(999) 999-9999");
+    </script>
+    <script>
+      $(document).ready(function() {
+
+        // При изменении значения поля "Stage"
+        $('#id_education_stage').change(function() {
+          var education_stage_id = $(this).val();
+
+          // Отправляем AJAX-запрос на сервер для получения связанных элементов
+          $.ajax({
+            url: '/applicationform/get_educ_groups/', // Путь к представлению Django для получения данных
+            method: 'GET',
+            data: {
+              'education_stage_id': education_stage_id
+            },
+            success: function(response) {
+              // Очищаем текущие опции в поле "Группа ОП"
+              $('#id_educ_plan_group').empty();
+
+              // Добавляем новые опции на основе полученных данных
+              $.each(response.educs, function(key, value) {
+                $('#id_educ_plan_group').append('<option value="' + key + '"> ' + value + ' </option>');
+              });
+
+              // Вызываем событие изменения поля "Группа ОП",
+              // чтобы сразу загрузить связанные элементы
+              $('#id_educ_plan_group').change();
+            },
+            error: function() {
+              alert('Ошибка при получении данных');
+            }
+          });
+        });
+
+
+
+        // При изменении значения поля "Группа специальности"
+        $('#id_educ_plan_group').change(function() {
+          var educPlanGroupId = $(this).val();
+
+          // Отправляем AJAX-запрос на сервер для получения связанных элементов
+          $.ajax({
+            url: '/applicationform/get_faculties/', // Путь к представлению Django для получения данных
+            method: 'GET',
+            data: {
+              'educ_plan_group_id': educPlanGroupId
+            }, // Передаем выбранный ID группы специальности
+            success: function(response) {
+              // Очищаем текущие опции в поле "Факультет"
+              $('#id_faculty').empty();
+
+              // Добавляем новые опции на основе полученных данных
+              $.each(response.faculties, function(key, value) {
+                $('#id_faculty').append('<option value="' + key + '"> ' + value + ' </option>');
+              });
+            },
+            error: function() {
+              alert('Ошибка при получении данных');
+            }
+          });
+        });
+      });
+    </script>
+
+    <script>
+      $(document).ready(function() {
+        // При изменении значения поля "Факультет"
+        $('#id_educ_plan_group').change(function() {
+          var educId = $(this).val();
+
+          // Отправляем AJAX-запрос на сервер для получения связанных элементов
+          $.ajax({
+            url: '/applicationform/get_educs/', // Путь к представлению Django для получения данных
+            method: 'GET',
+            data: {
+              'educ_plan_group_id': educId
+            }, // Передаем выбранный ID факультета
+            success: function(response) {
+              // Очищаем текущие опции в поле "Образовательная программа"
+              $('#id_educ_plan').empty();
+
+              // Добавляем новые опции на основе полученных данных
+              $.each(response.educs, function(key, value) {
+                $('#id_educ_plan').append('<option value="' + key + '"> ' + value + ' </option>');
+              });
+
+              // Вызываем событие изменения поля "Образовательная программа",
+              // чтобы сразу загрузить связанные элементы
+              $('#id_educ_plan').change();
+            },
+            error: function() {
+              alert('Ошибка при получении данных');
+            }
+          });
+        });
+
+        // При изменении значения поля "Образовательная программа"
+        $('#id_educ_plan').change(function() {
+          var educ_plan_Id = $(this).val();
+
+          // Отправляем AJAX-запрос на сервер для получения связанных элементов
+          $.ajax({
+            url: '/applicationform/get_subject1/', // Путь к представлению Django для получения данных
+            method: 'GET',
+            data: {
+              'educ_plan_id': educ_plan_Id
+            }, // Передаем выбранный ID образовательной программы
+            success: function(response) {
+              // Очищаем текущие опции в полях "Profile Subject 1" и "Profile Subject 2"
+              $('#id_profile_subject_1_name').empty();
+              $('#id_profile_subject_2_name').empty();
+
+              // Добавляем новые опции на основе полученных данных
+              $.each(response.subjects, function(key, value) {
+                $('#id_profile_subject_1_name').append('<option value="' + key + '"> ' + value + ' </option>');
+              });
+
+              $.each(response.subjects2, function(key, value) {
+                $('#id_profile_subject_2_name').append('<option value="' + key + '"> ' + value + ' </option>');
+              });
+            },
+            error: function() {
+              alert('Ошибка при получении данных');
+            }
+          });
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+  // Функция для обновления регионов
+  function updateRegions(areaId, regionId) {
+    var selectedAreaId = $(areaId).val();
+
+    // Отправляем AJAX-запрос на сервер для получения связанных элементов
+    $.ajax({
+      url: '/applicationform/get_regions/', // Путь к представлению Django для получения данных
+      method: 'GET',
+      data: {
+        'educational_area_id': selectedAreaId
+      }, // Передаем выбранный ID области
+      success: function(response) {
+        // Очищаем текущие опции в поле региона
+        $(regionId).empty();
+
+        // Добавляем новые опции на основе полученных данных
+        $.each(response.regions, function(key, value) {
+          $(regionId).append('<option value="' + key + '"> ' + value + ' </option>');
+        });
+      },
+      error: function() {
+        alert('Ошибка при получении данных');
+      }
+    });
+  }
+
+  // Обработчик события изменения поля "Образовательная область"
+  $('#id_educational_area').change(function() {
+    updateRegions('#id_educational_area', '#id_educational_region');
+  });
+
+  // Обработчик события изменения поля "Область проживания"
+  $('#id_address_area').change(function() {
+    updateRegions('#id_address_area', '#id_address_region');
+  });
+
+  // Обработчик события изменения поля "Область регистрации"
+  $('#id_register_address_area').change(function() {
+    updateRegions('#id_register_address_area', '#id_register_address_region');
+  });
+});
+
+    </script>
+    <script>
+      $(document).ready(function() {
+  // Скрыть блок данных при загрузке страницы
+  $('#hiddenFields').show();
+
+  // Обработчик события изменения значения в поле "Основание для зачисления"
+  $('#{{ form.basis_for_enrollment.id_for_label }}').change(function() {
+    var selectedOption = $(this).val();
+
+    // Проверка выбранного значения
+    if (selectedOption === '1') {
+      // Изменено значение на '3', соответствующее "Собеседование"
+      // Скрыть блок данных, если выбрано "Собеседование"
+      $('#hiddenFields').hide();
+      $('#IELTS').hide();
+
+      // Удалить атрибут required у полей внутри блока hiddenFields
+      $('#hiddenFields input, #hiddenFields select').removeAttr('required');
+    } else if (selectedOption === '4') {
+      $('#hiddenFields').show();
+      $('#IELTS').show();
+      $('#hiddenFields input, #hiddenFields select').removeAttr('required');
+      
+    }
+    else {
+      // Показать блок данных для всех других выбранных значений
+      $('#IELTS').hide();
+      $('#hiddenFields').show();
+
+
+
+      $('#hiddenFields input, #hiddenFields select').attr('required', 'required');
+      // Добавить атрибут required у полей внутри блока hiddenFields
+      $('#{{ form.grant_certificate_number.id_for_label }}').removeAttr('required');
+      $('#{{ form.grant_certificate_date.id_for_label }}').removeAttr('required');
+    }
+  });
+});
+
+    </script>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+  // Обработчик события изменения поля "Вид учебного заведения"
+  $('#{{ form.education_stage.id_for_label }}').change(function() {
+    var selectedValue = $(this).val();
+
+    if (selectedValue === '2') {
+      $('#semeynoe').hide();
+    }
+    else if (selectedValue === '3'){
+      $('#semeynoe').hide();
+    }
+    
+    else {
+      $('#semeynoe').show();
+    }
+      
+  });
+
+
+});
+
+
+</script>
+
+
+    <script>
+  $(document).ready(function() {
+    // Обработчик события изменения чекбокса
+    $('#{{ form.golden_badge.id_for_label }}').change(function() {
+      // Получаем текущее состояние чекбокса
+      var isChecked = $(this).is(':checked');
+
+
+
+      // Отображаем или скрываем блок 'golden_gile' в зависимости от состояния чекбокса
+      if (isChecked) {
+        $('.golden_gile').show();
+      } else {
+        $('.golden_gile').hide();
+
+        $('.golden_gile input').removeAttr('required');
+      }
+    });
+    // Скрыть блок 'golden_gile' при загрузке страницы, если чекбокс не выбран
+    if (!$('#{{ form.golden_badge.id_for_label }}').is(':checked')) {
+      $('.golden_gile').hide();
+      $('.golden_gile input').removeAttr('required');
+    }
+
+
+
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+  // Обработчик события изменения поля "Вид учебного заведения"
+  $('#{{ form.educational_institution.id_for_label }}').change(function() {
+    var selectedValue = $(this).val();
+
+    // Проверяем значение и показываем/скрываем блок "div.input-group.altyn"
+    if (selectedValue && selectedValue === '6') {
+      $('.altyn').show();
+    } else {
+      $('.altyn').hide();
+    }
+  });
+
+  // Скрыть блок "div.input-group.altyn" при загрузке страницы, если значение не равно '6'
+  var initialValue = $('#{{ form.educational_institution.id_for_label }}').val();
+  if (initialValue !== '6') {
+    $('.altyn').hide();
+  }
+});
+
+
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Обработчик события изменения поля "Вид учебного заведения"
+  $('#{{ form.family_position_status.id_for_label }}').change(function() {
+   var selectedValue = $(this).val();
+
+   if (selectedValue && (selectedValue === '5')) {
+     $('.mother').show();
+     $('.father').show();
+   } else {
+     $('.mother').hide();
+     $('.father').hide();
+
+     // Удалить атрибут required при скрытии блоков
+     $('.mother input, .father input').removeAttr('required');
+   }
+
+   if (selectedValue && (selectedValue === '4' || selectedValue === '3')) {
+     $('.family_position_file').show();
+   } else {
+     $('.family_position_file').hide();
+
+     // Удалить атрибут required при скрытии блока
+     $('.family_position_file input').removeAttr('required');
+   }
+
+   if (selectedValue && selectedValue === '4') {
+     $('.parent_type').show();
+   } else {
+     $('.parent_type').hide();
+
+     // Удалить атрибут required при скрытии блока
+     $('.parent_type select').removeAttr('required');
+   }
+ });
+
+ $('#{{ form.parent_type.id_for_label }}').change(function() {
+   var selectedValue = $(this).val();
+
+   if (selectedValue && (selectedValue === 'father')) {
+     $('.father').show();
+   } else {
+     $('.father').hide();
+
+     // Удалить атрибут required при скрытии блока
+     $('.father input').removeAttr('required');
+   }
+
+   if (selectedValue && (selectedValue === 'Mother')) {
+     $('.mother').show();
+   } else {
+     $('.mother').hide();
+
+     // Удалить атрибут required при скрытии блока
+     $('.mother input').removeAttr('required');
+   }
+ });
+
+  var initialValue2 = $('#{{ form.parent_type.id_for_label }}').val();
+
+  // Скрыть блок "div.input-group.altyn" при загрузке страницы, если значение не равно '2' или '3'
+  var initialValue = $('#{{ form.family_position_status.id_for_label }}').val();
+  if (initialValue !== '4' && initialValue !== '3') {
+    $('.family_position_file').hide();
+
+  }
+
+  // Скрыть блок "div.parent_type" при загрузке страницы, если значение не равно '2'
+  if (initialValue !== '4') {
+    $('.parent_type').hide();
+  }
+
+  if (initialValue !== '5') {
+    $('.mother').hide();
+    $('.father').hide();
+  }
+
+  if (initialValue2 !== 'father') {
+    $('.father').hide();
+  }
+  if (initialValue2 !== 'Mother') {
+    $('.mother').hide();
+  }
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Получаем начальное значение education_stage
+    var initialValue = $('#{{ form.education_stage.id_for_label }}').val();
+
+    // Получаем элементы, которые будем изменять
+    var mathematicalLiteracyLabel = document.querySelector('label[for="{{ form.mathematical_literacy.id_for_label }}"]');
+    var historyOfKazakhstanLabel = document.querySelector('label[for="{{ form.history_of_kazakhstan.id_for_label }}"]');
+    var readingLiteracyLabel = document.querySelector('label[for="{{ form.reading_literacy.id_for_label }}"]');
+
+    // Функция для обновления надписей
+    function updateLabels(selectedId) {
+        var mathematicalLiteracyLabelText = '';
+        var historyOfKazakhstanLabelText = '';
+        var readingLiteracyLabelText = '';
+
+        if (selectedId === '1') {
+            mathematicalLiteracyLabelText = 'Математическая грамотность (Балл):';
+            readingLiteracyLabelText = 'Грамотность чтения (Балл):';
+            historyOfKazakhstanLabelText = 'История Казахстана (Балл):';
+        } else if (selectedId === '5') {
+            mathematicalLiteracyLabelText = 'Аналитическое мышление (Балл):';
+            historyOfKazakhstanLabelText = 'Иностранный язык (Балл):';
+            readingLiteracyLabelText = 'Критическое мышление (Балл):';
+        } else {
+            mathematicalLiteracyLabelText = 'Математическая грамотность (Балл):';
+            historyOfKazakhstanLabelText = 'История Казахстана (Балл):';
+            readingLiteracyLabelText = 'Грамотность чтения (Балл):';
+        }
+
+        mathematicalLiteracyLabel.innerText = mathematicalLiteracyLabelText;
+        historyOfKazakhstanLabel.innerText = historyOfKazakhstanLabelText;
+        readingLiteracyLabel.innerText = readingLiteracyLabelText;
+    }
+
+    // Инициализация надписей при загрузке страницы
+    updateLabels(initialValue);
+
+    // Слушатель изменения education_stage
+    var educationStageField = document.getElementById('{{ form.education_stage.id_for_label }}');
+    educationStageField.addEventListener('change', function() {
+        var selectedId = educationStageField.value;
+        updateLabels(selectedId);
+    });
+});
+</script>
+
+
+  </form>
+</div>
+
+{% endif %}
+{% endblock %}

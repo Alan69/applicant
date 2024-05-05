@@ -1,0 +1,216 @@
+{% extends 'application/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block applydetail %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+
+
+
+    <div class="col-xl-6">
+      <h6 class="text-muted">Заявление на заселение в общежитие</h6>
+      {% for proposal in proposals %}
+      <div class="card">
+        <div class="d-flex align-items-end row">
+
+          <div class="card-body">
+            <div class="d-flex ms-3">
+              <h6 class="card-title me-3 mt-1">Номер заявки:</h6>
+              <p class="h-4 ps-2">{{ proposal.id }}</p>
+
+
+            </div>
+            <!-- Vertically Centered Modal -->
+            <hr>
+
+
+
+
+
+            <p></p>
+            {% if proposal %}
+            <div class="ms-3 me-3">
+
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle opacity="0.3" cx="15" cy="15" r="15" fill="#BDC0FF" />
+                    <circle cx="15" cy="15" r="10" fill="#6871F6" />
+                  </svg>
+                  <div class="ms-3" style="border-left: 1px solid  #DADEE2;height:70px;">
+
+                  </div>
+                </div>
+                <div class="">
+                  <label for="defaultFormControlInput" class="fw-bold h-4">Заявка создана</label>
+                  <p class="h-4 mb-1">{{ proposal.student.last_name }}  {{ proposal.student.first_name }} {{ proposal.student.profile.middle_name }}</p>
+                  <p class="h-4 ">Статус: <span class="badge bg-label-success me-1">Принято</span> <span class="ms-2">{{ proposal.created_at|date:'d.m.Y' }}</span></p>
+
+                </div>
+              </div>
+
+              {% if proposal.accountant_reason %}
+
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle opacity="0.3" cx="15" cy="15" r="15" fill="#FFEBCA" />
+                    <circle cx="15" cy="15" r="10" fill="#F4AE3D" />
+                  </svg>
+                  <div class="ms-3" style="border-left: 1px solid  #DADEE2;height:70px;">
+
+                  </div>
+                </div>
+                <div class="">
+                  <label for="defaultFormControlInput" class="fw-bold h-4">Бухгалтер</label>
+                  <p class="h-4 mb-1">{{proposal.checker_accountant.last_name}} {{proposal.checker_accountant.first_name}} {{proposal.checker_accountant.middle_name}}</p>
+                  {% if proposal.accountant_reason == 'not_paid' %}
+                  <p class="h-4 ">Статус: <span class="badge bg-label-secondary me-1">Не оплачено</span> <span class="ms-2">{{ proposal.updated_at|date:'d.m.Y' }}</span></p>
+                  {% elif proposal.accountant_reason == 'paid' %}
+                  <p class="h-4 ">Статус: <span class="badge bg-label-success me-1">Оплачено</span> <span class="ms-2">{{ proposal.updated_at|date:'d.m.Y' }}</span></p>
+                  {% endif %}
+                </div>
+
+              </div>
+              {% else %}
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle opacity="0.3" cx="15" cy="15" r="15" fill="#F7F7FB" />
+                    <circle cx="15" cy="15" r="10" fill="#6A758B" />
+                  </svg>
+                  <div class="ms-3" style="border-left: 1px solid  #DADEE2;height:70px;">
+
+                  </div>
+                </div>
+                <div class="">
+                  <label for="defaultFormControlInput" class="fw-bold h-4">Бухгалтер</label>
+                  <p class="h-4 mb-1"></p>
+                  <p class="h-4 ">Статус: <span></span> <span class="ms-2"></span></p>
+                </div>
+
+              </div>
+              {% endif %}
+              {% if proposal.commandant_reason %}
+
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle opacity="0.3" cx="15" cy="15" r="15" fill="#D1F3FF" />
+                    <circle cx="15" cy="15" r="10" fill="#56C1E7" />
+                  </svg>
+                  <div class="ms-3" style="border-left: 1px solid  #DADEE2;height:70px;">
+
+                  </div>
+                </div>
+                <div class="">
+                  <label for="defaultFormControlInput" class="fw-bold h-4">Комендант</label>
+                  <p class="h-4 mb-1">{{proposal.checker_commandant.last_name}} {{proposal.checker_commandant.first_name}} {{proposal.checker_commandant.middle_name}}</p>
+                  {% if proposal.commandant_reason == 'no_document' %}
+                  <p class="h-4 ">Статус: <span class="badge bg-label-secondary me-1">Отказ: Отсутствие документа</span> <span class="ms-2">{{ proposal.updated_at|date:'d.m.Y' }}</span></p>
+                  {% elif proposal.commandant_reason == 'bad_document' %}
+                  <p class="h-4 ">Статус: <span class="badge bg-label-secondary me-1">Отказ: Плохое качество фото документа</span> <span class="ms-2">{{ proposal.updated_at|date:'d.m.Y' }}</span></p>
+                  {% elif proposal.commandant_reason == 'rejeted' %}
+                  <p class="h-4 ">Статус:<span class="badge bg-label-danger me-1">Отказ: В прошлом году выселен за нарушение</span><span class="ms-2">{{ proposal.updated_at|date:'d.m.Y' }}</span></p>
+                  {% elif proposal.commandant_reason == 'accepted' %}
+                  <p class="h-4 ">Статус: <span class="badge bg-label-success me-1">Принято</span> <span class="ms-2">{{ proposal.updated_at|date:'d.m.Y' }}</span></p>
+                  {% elif proposal.commandant_reason == 'ordered' %}
+                  <p class="h-4 ">Статус: <span class="badge bg-label-info me-1">Добавлен в приказ</span> <span class="ms-2">{{ proposal.updated_at|date:'d.m.Y' }}</span></p>
+                  {% endif %}
+                </div>
+              </div>
+              {% else %}
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle opacity="0.3" cx="15" cy="15" r="15" fill="#F7F7FB" />
+                    <circle cx="15" cy="15" r="10" fill="#6A758B" />
+                  </svg>
+                  <div class="ms-3" style="border-left: 1px solid  #DADEE2;height:70px;">
+
+                  </div>
+                </div>
+                <div class="">
+                  <label for="defaultFormControlInput" class="fw-bold h-4">Комендант</label>
+                  <p class="h-4 mb-1"></p>
+                  <p class="h-4 ">Статус:  <span class="ms-2"></span></p>
+                </div>
+              </div>
+              {% endif %}
+              {% if proposal.status == 'accepted' %}
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg class="ms-1" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z"
+                      fill="#8CD955" />
+                  </svg>
+                </div>
+                <div class="">
+
+                  <p style="color:#8CD955;" class="h-4 mb-1">Поздравляем, вы получили место в общежитии! </p>
+                  <p></p>
+                  <span class="badge bg-primary mb-1 fw-bold">{{proposal.dormitory}}, <span></span> {{proposal.dormitory_room}} комната</span>
+                  <p></p>
+                  <p style="color:#555F6B;" class="h-4 mb-1">Обучающиеся, получившие одобрение заявки обращаются в соц. отдел (11-06 каб) для заключения договора и получения направления в общежитие.</p>
+                </div>
+              </div>
+              {% elif proposal.status == 'rejeted' %}
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M14 5.65814C9.39307 5.65814 5.65838 9.39283 5.65838 13.9998C5.65838 18.6068 9.39307 22.3415 14 22.3415C18.607 22.3415 22.3417 18.6068 22.3417 13.9998C22.3417 9.39283 18.607 5.65814 14 5.65814ZM3.67505 13.9998C3.67505 8.29747 8.29771 3.6748 14 3.6748C19.7024 3.6748 24.3251 8.29747 24.3251 13.9998C24.3251 19.7021 19.7024 24.3248 14 24.3248C8.29771 24.3248 3.67505 19.7021 3.67505 13.9998Z" fill="#EC5032"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M14 13.0083C14.5477 13.0083 14.9917 13.4523 14.9917 14L14.9917 17.5C14.9917 18.0476 14.5477 18.4916 14 18.4916C13.4524 18.4916 13.0084 18.0476 13.0084 17.5L13.0084 14C13.0084 13.4523 13.4524 13.0083 14 13.0083Z" fill="#EC5032"/>
+                  <path d="M15.1666 10.5002C15.1666 11.1445 14.6443 11.6668 13.9999 11.6668C13.3556 11.6668 12.8333 11.1445 12.8333 10.5002C12.8333 9.85583 13.3556 9.3335 13.9999 9.3335C14.6443 9.3335 15.1666 9.85583 15.1666 10.5002Z" fill="#EC5032"/>
+                  </svg>
+                </div>
+                <div class="">
+                  <p style="color:#EC5032;" class="h-4 mb-1">Вам отказано! </p>
+                  <p style="color:#EC5032;" class="h-4 mb-1">{{ proposal.comment }}</p>
+                </div>
+              </div>
+              {% else %}
+              <div class="d-flex">
+                <div class="me-3">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle opacity="0.3" cx="15" cy="15" r="15" fill="#F7F7FB" />
+                    <circle cx="15" cy="15" r="10" fill="#6A758B" />
+                  </svg>
+                </div>
+                <div class="">
+                  <label for="defaultFormControlInput" class="h-4">На рассмотрении</label>
+                </div>
+              </div>
+              {% endif %}
+
+
+
+
+
+
+
+
+
+            </div>
+            {% endif %}
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+
+
+
+  <!--/ Transactions -->
+</div>
+
+{% endblock %}
